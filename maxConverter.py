@@ -1,5 +1,24 @@
+'''
+maxConverter v1.2 by Andrej Perfilov [perfilov3d.com]
 
-import sys, re, win32api, glob, os, subprocess, signal, time, threading
+Description:
+
+    Converts *.max files to a version of your choice.
+    Currently supports all versions up to 3ds Max 2017.
+    Written in Python 3.5 and Qt 5.6.
+    
+    Please note that you need all the required installations
+    of 3ds Max to convert the files.
+
+Features:
+
+    - Batch converts multiple files
+    - Determines current *.max file version
+
+'''
+
+
+import sys, re, win32api, glob, os, subprocess, signal, time
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import QApplication, QDialog, QFileDialog, QTableWidgetItem, QHeaderView, QMessageBox
 from PyQt5.uic import loadUi
@@ -14,14 +33,6 @@ ROW - INFO
 3 - Path
 4 - Data
 '''
-
-def getFileList(folder): #get all files in folder
-    if folder:
-        fList = []
-        os.chdir(folder)
-        for file in glob.glob("*.max"):
-            fList.append(file)
-        return fList
 
 
 class mainWindow(QDialog):
@@ -231,11 +242,6 @@ class mainWindow(QDialog):
                         table.item(i,1).setText(ver)
                         table.item(i,2).setText('Ready')
             self.verSelected()
-                    #self.fList.insert(0,i)
-                    #try: self.changeStatus()
-                    #except: pass
-                    #t = threading.Thread(target=self.getFileVer, args=(i,))
-                    #t.start()
 
     def addToTable(self, file):
         table = self.ui.tbl_fileList
@@ -418,13 +424,9 @@ class mainWindow(QDialog):
                                     if A == B: # if target == destination, ex: 2017-2017
                                         f.write('loadMaxFile ' + r'"' + A_file + r'"' + ' quiet:true' + '\n')
                                         f.write('saveMaxFile ' + r'"' + B_file + r'"' + ' quiet:true' + '\n\n')
-                                        #f.write('loadMaxFile ' + r'"' + A_file.replace('/',r'\\') + r'"' + ' quiet:true' + '\n')
-                                        #f.write('saveMaxFile ' + r'"' + B_file.replace('/',r'\\') + r'"' + ' quiet:true' + '\n\n')
                                     else:
                                         f.write('loadMaxFile ' + r'"' + A_file + r'"' + ' quiet:true' + '\n')
                                         f.write('saveMaxFile ' + r'"' + B_file + r'"' + ' saveAsVersion:' + B + ' quiet:true' + '\n\n')
-                                        #f.write('loadMaxFile ' + r'"' + A_file.replace('/',r'\\') + r'"' + ' quiet:true' + '\n')
-                                        #f.write('saveMaxFile ' + r'"' + B_file.replace('/',r'\\') + r'"' + ' saveAsVersion:' + B + ' quiet:true' + '\n\n')
                                     self.barCount += 1
                                     QApplication.processEvents()
                 f.write('quitMax #noPrompt')
