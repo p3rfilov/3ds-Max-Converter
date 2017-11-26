@@ -1,3 +1,4 @@
+################################################################
 '''
 maxConverter v1.2 by Andrej Perfilov [perfilov3d.com]
 
@@ -16,6 +17,7 @@ Features:
     - Determines current *.max file version
 
 '''
+################################################################
 
 
 import sys, re, win32api, glob, os, subprocess, signal, time
