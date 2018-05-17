@@ -1,6 +1,6 @@
 ################################################################
 '''
-maxConverter v1.2 by Andrej Perfilov [perfilov3d.com]
+maxConverter v1.3 by Andrej Perfilov [perfilov3d.com]
 
 Description:
 
@@ -85,7 +85,7 @@ class mainWindow(QDialog):
         self.ui.cbx_convertTo.clear()
         for i in reversed(self.canConvertTo): self.ui.cbx_convertTo.addItem(i)
 
-#     @QtCore.pyqtSlot(list)
+#     @QtCore.pyqtSlot
 #     def filesDropped(self, links):
 #         print('got signal')
 #         print(links)
@@ -97,7 +97,7 @@ class mainWindow(QDialog):
             '''
             -------------------------------------------------
             
-            3ds Max File Converter v1.2
+            3ds Max File Converter v1.3
             by Andrej Perfilov
             
             Constructed using Python 3.5 and Qt 5.6
@@ -120,6 +120,7 @@ class mainWindow(QDialog):
         2015 : 2012, 2013, 2014, 2015
         2016 : 2012, 2013, 2014, 2015, 2016
         2017 : 2014, 2015, 2016, 2017
+        2018 : 2015, 2016, 2017, 2018
             '''
             )
         msg.setWindowTitle('About')
@@ -164,8 +165,10 @@ class mainWindow(QDialog):
             elif case == 2016:
                 theList.extend(('2012','2013','2014','2015','2016'))
             elif case == 2017:
-                theList.extend(('2014','2015','2016','2017'))    
-            elif case > 2017:
+                theList.extend(('2014','2015','2016','2017'))
+            elif case == 2018:
+                theList.extend(('2015','2016','2017','2018'))
+            elif case > 2018:
                 theList.extend((str(case),))
             return theList
 
