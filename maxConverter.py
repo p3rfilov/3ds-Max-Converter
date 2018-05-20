@@ -22,7 +22,7 @@ Features:
 
 import sys, re, win32api, glob, os, subprocess, signal, time
 from PyQt5 import QtCore, QtGui
-from PyQt5.QtWidgets import QApplication, QDialog, QFileDialog, QTableWidgetItem, QHeaderView, QMessageBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableWidgetItem, QHeaderView, QMessageBox
 from PyQt5.uic import loadUi
 
 '''
@@ -37,10 +37,9 @@ ROW - INFO
 '''
 
 
-class mainWindow(QDialog):
-    
-    def __init__(self):
-        QDialog.__init__(self)
+class mainWindow(QMainWindow):
+    def __init__(self, parent=None):
+        super(mainWindow, self).__init__(parent)
         self.ui = loadUi('maxConverterGUI.ui')
         self.ui.show()
 
@@ -54,12 +53,6 @@ class mainWindow(QDialog):
         self.watchList = []
         self.barCount = 0
         
-        # drag and drop attempt
-        #table = self.ui.tbl_fileList
-        #table.setAcceptDrops(True)
-        #table.dropped.connect(self.filesDropped)
-        # drag and drop attempt
-        
         action = self.ui.menuHelp.addAction('&About')
         action.triggered.connect(self.About)
         
@@ -70,13 +63,14 @@ class mainWindow(QDialog):
         self.canConvertTo = sorted(list(set(self.canConvertTo)))
         self.int_ConvertTo = [int(i) for i in self.canConvertTo]
         
-        self.ui.btn_Add.clicked.connect(self.addFiles)
+        self.ui.btn_Add.clicked.connect(self.browseFiles)
         self.ui.btn_Remove.clicked.connect(self.removeFiles)
         self.ui.cbx_convertTo.currentIndexChanged.connect(self.verSelected)
         self.ui.btn_Convert.clicked.connect(self.makeBatch)
         self.ui.btn_Stop.clicked.connect(self.stopScript)
 
         self.ui.btn_Convert.setEnabled(False)
+        self.ui.tbl_fileList.parent = self # set parent for dragDropTable
         self.ui.tbl_fileList.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.ui.tbl_fileList.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.ui.tbl_fileList.setColumnHidden(3,True)
@@ -84,12 +78,7 @@ class mainWindow(QDialog):
         self.ui.lbl_maxVers.setText(strInstalls)
         self.ui.cbx_convertTo.clear()
         for i in reversed(self.canConvertTo): self.ui.cbx_convertTo.addItem(i)
-
-#     @QtCore.pyqtSlot
-#     def filesDropped(self, links):
-#         print('got signal')
-#         print(links)
-
+    
     def About(self):
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
@@ -227,15 +216,17 @@ class mainWindow(QDialog):
                     elif maxVer in cleanLine:
                         return getVersion(maxVer, cleanLine)
 
-
-    def addFiles(self):
-        table = self.ui.tbl_fileList
+    def browseFiles(self):
         names = QFileDialog.getOpenFileNames(self, 'Open files', '*.max')
-        if names[0]:
+        self.addFiles(names[0])
+
+    def addFiles(self, names):
+        table = self.ui.tbl_fileList
+        if names:
             self.ui.btn_Remove.setEnabled(True)
             self.ui.btn_Convert.setEnabled(True)
             paths = [table.item(j,3).text() for j in range(table.rowCount())] # gather file paths from table
-            for i in names[0]:
+            for i in names:
                 if i not in paths:
                     self.addToTable(i)
             for i in range(table.rowCount()):

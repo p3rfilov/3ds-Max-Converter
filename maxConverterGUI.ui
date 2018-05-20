@@ -13,6 +13,12 @@
     <height>378</height>
    </rect>
   </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
+  </property>
   <property name="windowTitle">
    <string>3ds Max File Converter</string>
   </property>
@@ -25,9 +31,9 @@
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QTableWidget" name="tbl_fileList">
+       <widget class="dragDropTable" name="tbl_fileList">
         <property name="mouseTracking">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="acceptDrops">
          <bool>true</bool>
@@ -294,6 +300,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>dragDropTable</class>
+   <extends>QTableWidget</extends>
+   <header>dragDropTable.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
