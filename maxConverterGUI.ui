@@ -24,7 +24,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>maxConverter_Icon.png</normaloff>maxConverter_Icon.png</iconset>
+    <normaloff>maxConverter_Icon.ico</normaloff>maxConverter_Icon.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
